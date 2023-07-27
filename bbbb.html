@@ -217,7 +217,6 @@
         }
 
         let Messages = {};
-        debugger
 
 
         // Function to load messages from local storage (if available)
@@ -347,7 +346,7 @@ function storeMessage(userId, message) {
     let userMessages = localStorage.getItem(getLocalStorageKey(userId));
     userMessages = userMessages ? JSON.parse(userMessages) : [];
 
-    
+
     const timestamp = getTimeStamp();
     userMessages.push({ message, timestamp });
 
@@ -356,11 +355,8 @@ function storeMessage(userId, message) {
     localStorage.setItem("chatMessages", JSON.stringify(Messages));
 
 }
-
-
-
-        loadMessagesFromLocalStorage();
-    </script>
+    loadMessagesFromLocalStorage();
+</script>
 
 </body>
 
