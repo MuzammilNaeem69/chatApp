@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Profile</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="shortcut icon" sizes="16x16" href="favicon-16x16.png" type="image/x-icon">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="CSS files/style.css">
+    <script defer src="JS Files/login.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+
+        .chat {
+            border: 1px solid #ccc;
+            padding: 10px;
+            max-width: 400px;
+            margin: 0 auto;
+        }
+
+        .messages {
+            height: 200px;
+            overflow-y: auto;
+            border: 1px solid #ccc;
+            padding: 5px;
+        }
+
+        input[type="text"] {
+            width: 70%;
+            padding: 5px;
+        }
+
+        button {
+            padding: 5px;
+        }
+    </style>
+</head>
+
+<body>
+
+    
+
+    <body>
+        <div class="chat">
+            <div class="messages" id="messages"></div>
+            <input type="text" placeholder="Type your message..." id="messageInput">
+            <button onclick="sendMessage()"c>Send</button>
+        </div>
+
+        <script>
+            // Messages object to store all chat messages
+            let Messages = {};
+            debugger
+
+            const loggedUser = JSON.parse(localStorage.getItem("loggedUser"));
+
+            // Function to load messages from local storage (if available)
+            function loadMessagesFromLocalStorage() {
+                const storedMessages = localStorage.getItem("chatMessages");
+                if (storedMessages) {
+                    Messages = JSON.parse(storedMessages);
+                }
+            }
+    
+            // Function to store chat messages in the Messages object and local storage
+            function storeMessage(userId, message) {
+                if (!Messages[userId]) {
+                    Messages[userId] = [];
+                }
+                Messages[userId].push({ message, timestamp: getTimeStamp() });
+                localStorage.setItem("chatMessages", JSON.stringify(Messages));
+            }
+    
+            // Function to display chat messages from the Messages object
+            function displayMessages(userId) {
+                const messagesDiv = document.getElementById("messages");
+                messagesDiv.innerHTML = "";
+    
+                const messages = Messages[userId] || [];
+                messages.forEach((messageObj) => {
+                    const messageElement = document.createElement("div");
+                    messageElement.innerText = `${messageObj.message} - ${messageObj.timestamp}`;
+                    messagesDiv.appendChild(messageElement);
+                });
+            }
+    
+            // Function to generate a unique key
+            
+    
+            // Function to get the formatted timestamp
+            function getTimeStamp() {
+                const d = new Date();
+                return d.toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true });
+            }  
+    
+            // Function to handle sending messages
+            function sendMessage() {
+
+                const messageInput = document.getElementById("messageInput");
+                const message = messageInput.value;
+                if (message.trim() !== "") {
+                    const userId = loggedUser.id; // Assuming loggedUser.id exists and represents the user's unique identifier
+                    storeMessage(userId, message);
+                    displayMessages(userId);
+                    messageInput.value = "";
+                }
+            }
+    
+            // Load messages from local storage on page load
+            loadMessagesFromLocalStorage();
+        </script>
+    </body>
+
+</html>
+
+
+
+</body>
+
+</html>

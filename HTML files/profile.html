@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Profile</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="shortcut icon" sizes="16x16" href="favicon-16x16.png" type="image/x-icon">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+
+    <link rel="stylesheet" href="../CSS files/style.css">
+    <script defer src="../JS Files/login.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
+</head>
+
+<body class="bg-body container-fluid p-0">
+    <header style=" background:  #f8f8f8 ;">
+        <div class="d-flex justify-content-end align-items-center" style="padding: 13px 30px;">
+            <!-- User's initials image -->
+            <div class="profile-btn">
+                <span id="userInitials"></span>
+            </div>
+            <!-- User's name -->
+            <h4 class="mx-3" id="userName"></h4>
+            <!-- Logout button -->
+            <button class="btn btn-outline-dark  " onclick="logout()">Logout</button>
+        </div>
+    </header>
+    <section>
+        <div >
+            <div class="messaging">
+                <div class="inbox_msg">
+                    <div class="inbox_people">
+                        <div class="headind_srch">
+                            <div class="recent_heading">
+                                <h4>Recent</h4>
+                            </div>
+                            <div class="srch_bar">
+                                <div class="stylish-input-group">
+                                    <input type="text" class="search-bar" placeholder="Search">
+                                    <span class="input-group-addon">
+                                        <button type="button"> <i class="fa fa-search" aria-hidden="true"></i> </button>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="inbox_chat" id="inbox_chat">
+
+                        </div>
+                    </div>
+                    <!-- name bar  -->
+                    <div class=" border-top border-bottom" >
+                        <div id="namebar" >
+                            
+                        </div>
+                    </div>
+                    <div class="mesgs" style=" background:  #f8f8f8 ;">
+                        <div class="msg_history">
+                            <div class="incoming_msg">
+                                <div class="incoming_msg_img">
+                                    <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil">
+                                </div>
+                                <div class="received_msg">
+                                    <div class="received_withd_msg">
+                                        <p>Test which is a new approach to have all
+                                            solutions</p>
+                                        <span class="time_date"> 11:01 AM | June 9</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="outgoing_msg">
+                                <div class="sent_msg">
+                                    <p>Test which is a new approach to have all
+                                        solutions</p>
+                                    <span class="time_date"> 11:01 AM | June 9</span>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="type_msg">
+                            <div class="input_msg_write">
+                                <input type="text" class="write_msg" placeholder="Type a message" />
+                                <button class="msg_send_btn " type="button">
+                                    <i class="fa fa-paper-plane" style="color: #f5f9ff;"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </section>
+
+
+
+
+
+
+
+
+
+
+
+    <script>
+        // Retrieve the logged-in user's details from local storage
+        const loggedUser = JSON.parse(localStorage.getItem("loggedUser"));
+        if (loggedUser) {
+          // Display the user's details on the profile page
+          const userInitials = `${loggedUser.firstName.charAt(0).toUpperCase()}${loggedUser.lastName.charAt(0).toUpperCase()}`;
+          document.getElementById("userInitials").textContent = userInitials;
+          document.getElementById("userName").textContent = `${loggedUser.firstName} ${loggedUser.lastName}`;
+        } else {
+          // If no user is logged in, redirect to the login page
+          window.location.href = "../index.html";
+        }
+      
+        // Function to handle logout
+        function logout() {
+          // Clear the logged-in user data from local storage
+          localStorage.removeItem("loggedUser");
+          // Redirect to the login page after logout
+          window.location.href = "../index.html";
+        }
+      
+        // Function to create the chat list with user data
+        function createChatList() {
+          let text = localStorage.getItem("UserData");
+          let UserData = JSON.parse(text);
+          const chatListContainer = document.getElementById("inbox_chat");
+          chatListContainer.innerHTML = ""; // Clear the container before appending new elements
+      
+          UserData.forEach((user) => {
+            const userInitials = `${user.firstName.charAt(0).toUpperCase()}${user.lastName.charAt(0).toUpperCase()}`;
+            const chatListItem = `
+              <div class="chat_list active_chat  " id=${user.id}>
+                <div class="chat_people ">
+                  <div class="chat_img">
+                    <div class="profile-btn">
+                      <span id="userInitials">${userInitials}</span>
+                    </div>
+                  </div>
+                  <div class="chat_ib">
+                    <h5>${user.firstName} <span class="chat_date">12:33</span></h5>
+                    <p>he is a good Boy</p>
+                  </div>
+                </div>
+              </div>
+            `;
+            chatListContainer.innerHTML += chatListItem;
+          });
+        }
+        createChatList();
+
+    const d = new Date().toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true })
+
+    function findUserById(userId) {
+        debugger
+        const text = localStorage.getItem("UserData");
+        const UserData = JSON.parse(text);
+
+        // Find the user with the matching id in UserData array
+        const foundUser = UserData.find(user => user.id == userId);
+        
+        return foundUser;
+    }
+
+    // Event listener to get the class ID on click and retrieve the name
+    let chatListItems = document.getElementsByClassName('chat_list');
+    for (let i = 0; i < chatListItems.length; i++) {
+        chatListItems[i].addEventListener("click", () => {
+            const classId = chatListItems[i].getAttribute('id');
+            const foundUser = findUserById(classId);
+            const userName = `${foundUser.firstName} ${foundUser.lastName}`;
+            const template = `
+            <div class="d-flex justify-content-between align-items-center text-center" style="background: #ebebeb; padding: 10px 35px;">
+                <div>
+                    <span>${ userName }</span>
+                </div>
+                <div>
+                    <span>${d}</span>
+                </div>
+            </div>
+
+            
+        `;
+        const namebarElement = document.getElementById('namebar');
+        namebarElement.innerHTML = template;
+        });
+    }
+    
+</script>
+
+</body>
+
+</html>

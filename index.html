@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Form</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="shortcut icon" sizes="16x16" href="favicon-16x16.png" type="image/x-icon">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link rel="stylesheet" href="CSS files/style.css">
+    <script defer src="JS Files/login.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
+
+</head>
+
+<body class="bg-body ">
+    <section class="vh-100 gradient-custom mb-4" >
+        <div class="container py-5 h-100">
+            <div class="row d-flex justify-content-center align-items-center h-100">
+                <div class="col-12 col-md-8 col-lg-6 col-xl-5">
+                    <div class="card bg-transparent text-white" style="border-radius: 1rem;">
+                        <div class="card-body p-5 text-center">
+                            <div class="mb-md-5 mt-md-4 pb-5">
+                                <h2 class="fw-bold mb-2 text-uppercase"> <i>Login</i></h2>
+                                <p class="text-white mb-5"> <i>Please enter your login and password!</i></p>
+                                <form id="loginForm" >
+                                    <div class="form-floating text-start form-white text-black mb-4">
+                                        <input type="email" class="form-control form-control-lg" id="email"  required pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"  placeholder=" user1@gmail.com" min="6" >
+                                        <label for="email" class="fst-italic">Email</label>
+                                        <div class="sameEmail text-danger fw-bolder"  style="display: none; text-shadow: 0px 0px 29px rgb(248 249 249);">
+                                                <p class="mb-0"> <i>* User Doesn't exist</i>
+                                                    <a href="#!" class="text-white fw-bolder" onclick="openSignUp()"><i>Signup First</i></a>
+                                                </p>
+                                        </div>
+                                    </div>
+                                    <div class="form-floating text-start text-black form-white mb-4">
+                                        
+                                        <input type="password" class="form-control form-control-lg" id="password" required  placeholder="********" min="7" >
+                                        <label for="password" class="fst-italic">Password</label>
+                                        <div class="samePassword text-danger fw-bolder" style="display: none; text-shadow: 0px 0px 29px rgb(248 249 249);">
+                                            <i>* Password doesn't match. Try Again</i>
+                                        </div>
+                                    </div>
+
+                                    <button class="btn btn-outline-light btn-lg px-5" type="submit">Login</button>
+                                </form>
+                            </div>
+
+                            <div>
+                                <p class="mb-0"> <i>Don't have an account?</i>
+                                    <a href="#!" class="text-white fw-bold" onclick="openSignUp()"><i>Signup</i></a>
+                                </p>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+
+</body>
+
+</html>
