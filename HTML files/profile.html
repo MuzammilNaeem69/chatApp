@@ -32,26 +32,31 @@
         </div>
     </header>
     <section>
-        <div >
+        <div>
             <div class="messaging">
                 <div class="inbox_msg">
                     <div class="inbox_people">
-                        
+                        <div class="headind_srch text-center">
+                            <div class="recent_heading ">
+                                <h4>CHAT APPLICATION</h4>
+                            </div>
+
+                        </div>
                         <div class="inbox_chat" id="inbox_chat">
 
                         </div>
                     </div>
                     <!-- name bar  -->
-                    <div class=" border-top border-bottom" >
-                        <div id="namebar" >
-                            
+                    <div class=" border-top border-bottom">
+                        <div id="namebar">
+
                         </div>
                     </div>
                     <div class="mesgs" style=" background:  #f8f8f8 ;">
                         <div class="msg_history">
-                            <div class="incoming_msg">
+                            <!-- <div class="incoming_msg">
                                 <div class="incoming_msg_img">
-                                    <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil">
+                                    <img src="images/user-profile.png" alt="picture">
                                 </div>
                                 <div class="received_msg">
                                     <div class="received_withd_msg">
@@ -60,24 +65,30 @@
                                         <span class="time_date"> 11:01 AM | June 9</span>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="outgoing_msg">
-                                <div class="sent_msg">
-                                    <p>Test which is a new approach to have all
-                                        solutions</p>
-                                    <span class="time_date"> 11:01 AM | June 9</span>
-                                </div>
-                            </div>
+                            </div> -->
+                            <div id="messages"></div>
 
                         </div>
-                        <div class="type_msg">
-                            <div class="input_msg_write">
-                                <input type="text" class="write_msg" placeholder="Type a message" />
-                                <button class="msg_send_btn " type="button">
-                                    <i class="fa fa-paper-plane" style="color: #f5f9ff;"></i>
+                        <div class="type_msg" id="type_msg">
+                            <!-- <div class="input_msg_write">
+                                <input type="text" class="write_msg" placeholder="Type a message" id="messageInput">
+                                <button class="msg_send_btn " onclick="sendMessage()">
+                                    <i class="fa fa-paper-plane  " style="color: #f5f9ff;"></i>
                                 </button>
-                            </div>
+                            </div> -->
                         </div>
+                        <!-- <div class="incoming_msg">
+                                <div class="incoming_msg_img">
+                                    <img src="images/user-profile.png" alt="picture">
+                                </div>
+                                <div class="received_msg">
+                                    <div class="received_withd_msg">
+                                        <p>Test which is a new approach to have all
+                                            solutions</p>
+                                        <span class="time_date"> 11:01 AM | June 9</span>
+                                    </div>
+                                </div>
+                            </div> -->
                     </div>
                 </div>
             </div>
@@ -85,104 +96,293 @@
 
     </section>
 
-
-
-
-
-
-
-
-
-
-
     <script>
+        let currentUser = null;
+        let foundUser = null;
         // Retrieve the logged-in user's details from local storage
         const loggedUser = JSON.parse(localStorage.getItem("loggedUser"));
         if (loggedUser) {
-          // Display the user's details on the profile page
-          const userInitials = `${loggedUser.firstName.charAt(0).toUpperCase()}${loggedUser.lastName.charAt(0).toUpperCase()}`;
-          document.getElementById("userInitials").textContent = userInitials;
-          document.getElementById("userName").textContent = `${loggedUser.firstName} ${loggedUser.lastName}`;
+            // Display the user's details on the profile page
+            const userInitials = `${loggedUser.firstName.charAt(0).toUpperCase()}${loggedUser.lastName.charAt(0).toUpperCase()}`;
+            document.getElementById("userInitials").textContent = userInitials;
+            document.getElementById("userName").textContent = `${loggedUser.firstName} ${loggedUser.lastName}`;
         } else {
-          // If no user is logged in, redirect to the login page
-          window.location.href = "../index.html";
+            // If no user is logged in, redirect to the login page
+            window.location.href = "../index.html";
         }
-      
+
         // Function to handle logout
         function logout() {
-          // Clear the logged-in user data from local storage
-          localStorage.removeItem("loggedUser");
-          // Redirect to the login page after logout
-          window.location.href = "../index.html";
+            // Clear the logged-in user data from local storage
+            localStorage.removeItem("loggedUser");
+            // Redirect to the login page after logout
+            window.location.href = "../index.html";
         }
-      
+
         // Function to create the chat list with user data
         function createChatList() {
-          let text = localStorage.getItem("UserData");
-          let UserData = JSON.parse(text);
-          const chatListContainer = document.getElementById("inbox_chat");
-          chatListContainer.innerHTML = ""; // Clear the container before appending new elements
-      
-          UserData.forEach((user) => {
-            const userInitials = `${user.firstName.charAt(0).toUpperCase()}${user.lastName.charAt(0).toUpperCase()}`;
-            const chatListItem = `
-              <div class="chat_list active_chat  " id=${user.id}>
-                <div class="chat_people ">
-                  <div class="chat_img">
+            let text = localStorage.getItem("UserData");
+            let UserData = JSON.parse(text);
+            const chatListContainer = document.getElementById("inbox_chat");
+            chatListContainer.innerHTML = ""; // Clear the container before appending new elements
+
+            UserData.forEach((user) => {
+                const userInitials = `${user.firstName.charAt(0).toUpperCase()}${user.lastName.charAt(0).toUpperCase()}`;
+                const chatListItem = `
+                <div class="chat_list active_chat  " id=${user.id} >
+                    <div class="chat_people ">
+                        <div class="chat_img">
                     <div class="profile-btn">
-                      <span id="userInitials">${userInitials}</span>
+                        <span id="userInitials">${userInitials}</span>
                     </div>
-                  </div>
-                  <div class="chat_ib">
+                </div>
+                <div class="chat_ib">
                     <h5>${user.firstName} <span class="chat_date">12:33</span></h5>
                     <p>he is a good Boy</p>
-                  </div>
                 </div>
-              </div>
+                    </div>
+                </div>
             `;
-            chatListContainer.innerHTML += chatListItem;
-          });
+                chatListContainer.innerHTML += chatListItem;
+            });
         }
         createChatList();
+        //////////////////////////////////////////////////////////////////
 
-    const d = new Date().toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true })
+        const d = new Date().toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true })
 
-    function findUserById(userId) {
-        debugger
-        const text = localStorage.getItem("UserData");
-        const UserData = JSON.parse(text);
+        function findUserById(userId) {
+            debugger
+            const text = localStorage.getItem("UserData");
+            const UserData = JSON.parse(text);
 
-        // Find the user with the matching id in UserData array
-        const foundUser = UserData.find(user => user.id == userId);
-        
-        return foundUser;
-    }
+            // Find the user with the matching id in UserData array
+            const foundUser = UserData.find(user => user.id == userId);
 
-    // Event listener to get the class ID on click and retrieve the name
-    let chatListItems = document.getElementsByClassName('chat_list');
-    for (let i = 0; i < chatListItems.length; i++) {
-        chatListItems[i].addEventListener("click", () => {
-            const classId = chatListItems[i].getAttribute('id');
-            const foundUser = findUserById(classId);
-            const userName = `${foundUser.firstName} ${foundUser.lastName}`;
-            const template = `
+            return foundUser;
+        }
+
+        /////////////////// display
+        function displayInput() {
+            const inputDiv = document.getElementById('type_msg');
+            const messageElement = document.createElement("div");
+            messageElement.innerHTML = `
+        <div class="input_msg_write">
+            <input type="text" class="write_msg" placeholder="Type a message" id="messageInput">
+            <button class="msg_send_btn" onclick="sendMessage()">
+                <i class="fa fa-paper-plane" style="color: #f5f9ff;"></i>
+            </button>
+        </div>
+    `;
+
+            inputDiv.innerHTML = ""; // Clear any existing content inside inputDiv
+            inputDiv.appendChild(messageElement);
+        }
+
+        // Event listener to get the class ID on click and retrieve the name
+        let chatListItems = document.getElementsByClassName('chat_list');
+        for (let i = 0; i < chatListItems.length; i++) {
+            chatListItems[i].addEventListener("click", () => {
+                const classId = chatListItems[i].getAttribute('id');
+                // const foundUser = findUserById(classId);
+                foundUser = findUserById(classId);
+                const userName = `${foundUser.firstName} ${foundUser.lastName}`;
+                const template = `
             <div class="d-flex justify-content-between align-items-center text-center" style="background: #ebebeb; padding: 10px 35px;">
                 <div>
-                    <span>${ userName }</span>
+                    <span>${userName}</span>
                 </div>
                 <div>
                     <span>${d}</span>
                 </div>
             </div>
+            `;
+                const namebarElement = document.getElementById('namebar');
+                namebarElement.innerHTML = template;
+                displayInput();
+                changeUser(foundUser.id); // 
+                if (foundUser.id !== loggedUser.id) {
+                    displayMessages(); // Call displayMessages1() if the user is the receiver
+                } else {
+                    displayMessages1(); // Call displayMessages() if the user is the logged-in user
+                }
+            });
+        }
 
-            
+        let Messages = {};
+
+        function getLocalStorageKey() {
+            return `Sid-${currentUser}`;
+        }
+
+        // Function to switch between users
+        function changeUser(user) {
+            currentUser = user;
+            loadMessagesFromLocalStorage();
+            // displayMessages();
+        }
+
+
+        function loadMessagesFromLocalStorage() {
+            debugger
+            const storedMessages = localStorage.getItem(getLocalStorageKey());
+            if (storedMessages) {
+                Messages[currentUser] = JSON.parse(storedMessages);
+            }
+        }
+
+
+        // Function to display chat messages from the Messages object
+        function displayMessages() {
+            debugger
+            const messagesDiv = document.getElementById("messages");
+
+            messagesDiv.innerHTML = "";
+
+            const messages = Messages[currentUser] || [];
+            messages.forEach((messageObj) => {
+                const messageElement = document.createElement("div");
+                messageElement.innerHTML = `
+                    <div class="outgoing_msg">
+                        <div class="sent_msg">
+                            <p>${messageObj.message}</p>
+                            <span class="time_date">${messageObj.timestamp}</span>
+                        </div>
+                    </div>
+                    `;
+                messagesDiv.appendChild(messageElement);
+            });
+
+        }
+
+        function displayMessages1() {
+            debugger
+            const messagesDiv = document.getElementById("messages");
+
+            messagesDiv.innerHTML = "";
+            // hehehehe
+            const messages = Messages[currentUser] || [];
+            messages.forEach((messageObj) => {
+                const messageElement = document.createElement("div");
+                messageElement.innerHTML = `
+                            <div class="incoming_msg">
+                                <div class="incoming_msg_img">
+                                    <img src="../images/user-profile.png" alt="picture">
+                                </div>
+                                <div class="received_msg">
+                                    <div class="received_withd_msg">
+                                        <p>${messageObj.message}</p>
+                                        <span class="time_date">${messageObj.timestamp}</span>
+                                    </div>
+                                </div>
+                            </div>
+                    `;
+                messagesDiv.appendChild(messageElement);
+            });
+
+        }
+
+
+
+        // Function to get the formatted timestamp
+        function getTimeStamp() {
+            const currentDate = new Date().toLocaleString('en-US', {
+                hour: 'numeric',
+                minute: 'numeric',
+                hour12: true
+            });
+
+            const currentMonth = new Date().toLocaleString('en-US', {
+                month: 'long'
+            });
+
+            const currentDay = new Date().toLocaleString('en-US', {
+                day: 'numeric'
+            });
+
+            const formattedDateTime = `${currentDate} | ${currentMonth} ${currentDay}`;
+
+            return formattedDateTime;
+        }
+
+        // Function to handle sending messages
+        function sendMessage() {
+
+            debugger
+            const messageInput = document.getElementById("messageInput");
+            const message = messageInput.value;
+
+            if (message.trim() !== "") {
+                const userId = loggedUser.id; // Assuming loggedUser.id exists and represents the user's unique identifier
+                storeMessage(userId, message);
+                storeMessage1(userId, message);
+
+                const messagesDiv = document.getElementById("messages");
+        const messageElement = document.createElement("div");
+        messageElement.innerHTML = `
+            <div class="outgoing_msg">
+                <div class="sent_msg">
+                    <p>${message}</p>
+                    <span class="time_date">${getTimeStamp()}</span>
+                </div>
+            </div>
         `;
-        const namebarElement = document.getElementById('namebar');
-        namebarElement.innerHTML = template;
-        });
+        messagesDiv.appendChild(messageElement);
+        messageInput.value = "";
+
+
+        }
     }
+
+        function storeMessage(userId, message) {
+            debugger
+            // Retrieve existing messages for the user from local storage, if any
+            console.log(userId)
+            let userMessages = localStorage.getItem(getLocalStorageKey(userId));
+            userMessages = userMessages ? JSON.parse(userMessages) : [];
+
+            const timestamp = getTimeStamp();
+            userMessages.push({ message, timestamp });
+
+            // Store the updated messages for the specific user in local storage
+            localStorage.setItem(getLocalStorageKey(userId), JSON.stringify(userMessages));
+
+
+        }
+
+        function storeMessage1(userId, message) {
+            // Retrieve existing messages for the user from local storage, if any
+            let chatMessages = localStorage.getItem("chatMessages");
+            chatMessages = chatMessages ? JSON.parse(chatMessages) : {};
+
+            // Get the loggedUserId
+            const loggedUserId = "loggedUserId-" + userId;
+
+            // Get the current Sid (session id)
+            const currentSid = getLocalStorageKey();
+
+            // Get the current timestamp
+            const timestamp = getTimeStamp();
+
+            // Create a new session object if it doesn't exist for the loggedUserId
+            if (!chatMessages[loggedUserId]) {
+                chatMessages[loggedUserId] = {};
+            }
+
+            // Create a new session array if it doesn't exist for the currentSid
+            if (!chatMessages[loggedUserId][currentSid]) {
+                chatMessages[loggedUserId][currentSid] = [];
+            }
+
+            // Push the new message to the session array
+            chatMessages[loggedUserId][currentSid].push({ message, timestamp });
+
+            // Store the updated messages in local storage
+            localStorage.setItem("chatMessages", JSON.stringify(chatMessages));
+        }
     
-</script>
+        loadMessagesFromLocalStorage();
+    </script>
 
 </body>
 
