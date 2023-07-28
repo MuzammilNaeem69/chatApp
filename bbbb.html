@@ -251,7 +251,7 @@
             debugger
             const storedMessages = localStorage.getItem(getLocalStorageKey());
             if (storedMessages) {
-                Messages[currentUser] = JSON.parse(storedMessages);
+                Messages[userId] = JSON.parse(storedMessages);
             }
         }
 
@@ -346,15 +346,34 @@ function storeMessage(userId, message) {
     let userMessages = localStorage.getItem(getLocalStorageKey(userId));
     userMessages = userMessages ? JSON.parse(userMessages) : [];
 
+    const loggedUser = JSON.parse(localStorage.getItem("LoggedUser"));
 
     const timestamp = getTimeStamp();
     userMessages.push({ message, timestamp });
 
     // Store the updated messages for the specific user in local storage
     localStorage.setItem(getLocalStorageKey(userId), JSON.stringify(userMessages));
-    localStorage.setItem("chatMessages", JSON.stringify(Messages));
 
-}
+    let chatHistory = localStorage.getItem("ChatHistory");
+    
+    chatHistory = chatHistory ? JSON.parse(chatHistory) : {};
+    const newMessage = { message, timestamp };
+
+    if (!chatHistory[`Sender-${userId}`]) {
+            // If the user's ID doesn't exist, create a new entry in the chat history
+            chatHistory[`Sender-${userId}`] = {
+                "ReceiverId": userId,
+                "Messages": [newMessage],
+            };
+        } else {
+            // If the user's ID already exists, append the new message to the existing messages array
+            chatHistory[`Sender-${userId}`].Messages.push(newMessage);
+        }
+
+        // Store the updated chat history in local storage
+        localStorage.setItem("ChatHistory", JSON.stringify(chatHistory));
+    }
+
     loadMessagesFromLocalStorage();
 </script>
 
