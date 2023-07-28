@@ -79,6 +79,8 @@
                 Messages[userId].push({ message, timestamp: getTimeStamp() });
                 localStorage.setItem("chatMessages", JSON.stringify(Messages));
             }
+
+            
     
             // Function to display chat messages from the Messages object
             function displayMessages(userId) {
@@ -104,16 +106,26 @@
     
             // Function to handle sending messages
             function sendMessage() {
-
                 const messageInput = document.getElementById("messageInput");
-                const message = messageInput.value;
-                if (message.trim() !== "") {
-                    const userId = loggedUser.id; // Assuming loggedUser.id exists and represents the user's unique identifier
+                const message = messageInput.value.trim();
+                
+                if (message !== "") {
+                    const loggedUser = JSON.parse(localStorage.getItem("loggedUser"));
+                    if (loggedUser) {
+                    const userId = loggedUser.id;
+                    
+                    // Store the message in the respective chat history for the logged-in user
                     storeMessage(userId, message);
-                    displayMessages(userId);
+                    
+                    // Display the updated chat messages
+                    displayMessages();
+                    
+                    // Clear the input field after sending the message
                     messageInput.value = "";
+                    }
                 }
-            }
+                }
+
     
             // Load messages from local storage on page load
             loadMessagesFromLocalStorage();

@@ -133,19 +133,19 @@
             UserData.forEach((user) => {
                 const userInitials = `${user.firstName.charAt(0).toUpperCase()}${user.lastName.charAt(0).toUpperCase()}`;
                 const chatListItem = `
-              <div class="chat_list active_chat  " id=${user.id} >
-                <div class="chat_people ">
-                  <div class="chat_img">
+                <div class="chat_list active_chat  " id=${user.id} >
+                    <div class="chat_people ">
+                        <div class="chat_img">
                     <div class="profile-btn">
-                      <span id="userInitials">${userInitials}</span>
+                        <span id="userInitials">${userInitials}</span>
                     </div>
-                  </div>
-                  <div class="chat_ib">
+                </div>
+                <div class="chat_ib">
                     <h5>${user.firstName} <span class="chat_date">12:33</span></h5>
                     <p>he is a good Boy</p>
-                  </div>
                 </div>
-              </div>
+                    </div>
+                </div>
             `;
                 chatListContainer.innerHTML += chatListItem;
             });
@@ -227,10 +227,10 @@
         //     }
         // }
 
-        
 
 
-    
+
+
 
 
 
@@ -240,7 +240,7 @@
         }
 
         // Function to switch between users
-        function changeUser(user) { 
+        function changeUser(user) {
             currentUser = user;
             loadMessagesFromLocalStorage();
             displayMessages();
@@ -251,7 +251,7 @@
             debugger
             const storedMessages = localStorage.getItem(getLocalStorageKey());
             if (storedMessages) {
-                Messages[userId] = JSON.parse(storedMessages);
+                Messages[currentUser] = JSON.parse(storedMessages);
             }
         }
 
@@ -274,14 +274,12 @@
                         </div>
                     </div>
                     `;
-
-
                 messagesDiv.appendChild(messageElement);
             });
 
         }
 
-        
+
 
         // Function to get the formatted timestamp
         function getTimeStamp() {
@@ -313,69 +311,84 @@
             if (message.trim() !== "") {
                 const userId = loggedUser.id; // Assuming loggedUser.id exists and represents the user's unique identifier
                 storeMessage(userId, message);
+                storeMessage1(userId, message);
+
                 displayMessages();
                 debugger
-                messageInput.value = ""; 
+                messageInput.value = "";
             }
 
-            
+
         }
 
 
-//         function storeMessage(userId, message) {
-//         if (!Messages[userId]) {
-//             Messages[userId] = [];
-//         }
+        //         function storeMessage(userId, message) {
+        //         if (!Messages[userId]) {
+        //             Messages[userId] = [];
+        //         }
 
-//         const timestamp = getTimeStamp();
-//         Messages[userId].push({ message, timestamp });
-        
-//         localStorage.setItem(getLocalStorageKey(userId), JSON.stringify(Messages[userId]));
+        //         const timestamp = getTimeStamp();
+        //         Messages[userId].push({ message, timestamp });
 
-//         // Store the messages in local storage with the appropriate key for the user
-//         // localStorage.setItem(getLocalStorageKey(userId), JSON.stringify(Messages[userId]));
+        //         localStorage.setItem(getLocalStorageKey(userId), JSON.stringify(Messages[userId]));
 
-//         // // Update the global "chatMessages" in local storage if needed
-//         // localStorage.setItem("chatMessages", JSON.stringify(Messages));
-        
-// }
+        //         // Store the messages in local storage with the appropriate key for the user
+        //         // localStorage.setItem(getLocalStorageKey(userId), JSON.stringify(Messages[userId]));
 
-function storeMessage(userId, message) {
+        //         // // Update the global "chatMessages" in local storage if needed
+        //         // localStorage.setItem("chatMessages", JSON.stringify(Messages));
+
+        // }
+
+        function storeMessage(userId, message) {
+            debugger
+            // Retrieve existing messages for the user from local storage, if any
+            console.log(userId)
+            let userMessages = localStorage.getItem(getLocalStorageKey(userId));
+            userMessages = userMessages ? JSON.parse(userMessages) : [];
+
+            const timestamp = getTimeStamp();
+            userMessages.push({ message, timestamp });
+
+            // Store the updated messages for the specific user in local storage
+            localStorage.setItem(getLocalStorageKey(userId), JSON.stringify(userMessages));
+
+
+        }
+
+        function storeMessage1(userId, message) {
     // Retrieve existing messages for the user from local storage, if any
-    
-    let userMessages = localStorage.getItem(getLocalStorageKey(userId));
-    userMessages = userMessages ? JSON.parse(userMessages) : [];
+    let chatMessages = localStorage.getItem("chatMessages");
+    chatMessages = chatMessages ? JSON.parse(chatMessages) : {};
 
-    const loggedUser = JSON.parse(localStorage.getItem("LoggedUser"));
+    // Get the loggedUserId
+    const loggedUserId = "loggedUserId-" + userId;
 
+    // Get the current Sid (session id)
+    const currentSid = getLocalStorageKey();
+
+    // Get the current timestamp
     const timestamp = getTimeStamp();
-    userMessages.push({ message, timestamp });
 
-    // Store the updated messages for the specific user in local storage
-    localStorage.setItem(getLocalStorageKey(userId), JSON.stringify(userMessages));
-
-    let chatHistory = localStorage.getItem("ChatHistory");
-    
-    chatHistory = chatHistory ? JSON.parse(chatHistory) : {};
-    const newMessage = { message, timestamp };
-
-    if (!chatHistory[`Sender-${userId}`]) {
-            // If the user's ID doesn't exist, create a new entry in the chat history
-            chatHistory[`Sender-${userId}`] = {
-                "ReceiverId": userId,
-                "Messages": [newMessage],
-            };
-        } else {
-            // If the user's ID already exists, append the new message to the existing messages array
-            chatHistory[`Sender-${userId}`].Messages.push(newMessage);
-        }
-
-        // Store the updated chat history in local storage
-        localStorage.setItem("ChatHistory", JSON.stringify(chatHistory));
+    // Create a new session object if it doesn't exist for the loggedUserId
+    if (!chatMessages[loggedUserId]) {
+        chatMessages[loggedUserId] = {};
     }
 
-    loadMessagesFromLocalStorage();
-</script>
+    // Create a new session array if it doesn't exist for the currentSid
+    if (!chatMessages[loggedUserId][currentSid]) {
+        chatMessages[loggedUserId][currentSid] = [];
+    }
+
+    // Push the new message to the session array
+    chatMessages[loggedUserId][currentSid].push({ message, timestamp });
+
+    // Store the updated messages in local storage
+    localStorage.setItem("chatMessages", JSON.stringify(chatMessages));
+}
+
+        loadMessagesFromLocalStorage();
+    </script>
 
 </body>
 
