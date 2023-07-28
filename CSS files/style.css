@@ -75,8 +75,7 @@ img {
 }
 
 .recent_heading {
-  float: left;
-  width: 40%;
+  color:#007bff;
 }
 .srch_bar {
   display: inline-block;
@@ -146,7 +145,7 @@ img {
   padding: 18px 16px 10px;
 }
 .inbox_chat {
-  height: 550px;
+  height: 559px;
   overflow-y: scroll;
 }
 
@@ -232,10 +231,15 @@ img {
 }
 .messaging {
   padding: 0 0 0 0;
+  background:#f8f8f8;
+  height:100vh;
 }
 .msg_history {
   height: 516px;
   overflow-y: auto;
+}
+.incoming_msg {
+  margin: 18px;
 }
 
 .profile-btn {
